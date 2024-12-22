@@ -6,11 +6,11 @@ import validateRequest from "../../middlewares/validateRequest";
 const userRouter = Router();
 
 userRouter.post(
-  "/",
+  "/register",
   validateRequest(UserValidation.userValidationSchema),
-  userController.createUser
+  userController.registerUser
 );
-userRouter.get("/", userController.getUser);
-userRouter.get("/:userId", userController.getSingleUser);
+userRouter.get("/users", userController.getUser);
+userRouter.get("/users/:userId", userController.getSingleUser);
 
 export default userRouter;

@@ -10,7 +10,7 @@ const userValidationSchema = z.object({
     password: z
       .string({ invalid_type_error: "Password must be string" })
       .max(20, { message: "Password can not be more than 20 characters" }),
-    role: z.enum(["admin", "user"], { message: "Invalid role" }),
+    role: z.enum(["admin", "user"]).optional(),
     isBlocked: z.boolean().optional(),
     isDeleted: z.boolean().optional(),
   }),

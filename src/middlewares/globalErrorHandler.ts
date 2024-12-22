@@ -12,9 +12,11 @@ const handlerZodError = (err: any, res: Response) => {
 
   res.status(400).json({
     success: false,
+    // message: err.message,
     message: err.message,
-    issues: issues,
+    statusCode: httpStatus.BAD_REQUEST,
     error: err,
+    stack: err?.stack,
   });
 };
 
@@ -30,8 +32,9 @@ const handleValidationError = (err: any, res: Response) => {
   res.status(400).json({
     success: false,
     message: err.message,
-    issues: issues,
+    statusCode: httpStatus.BAD_REQUEST,
     error: err,
+    stack: err?.stack,
   });
 };
 
@@ -39,7 +42,9 @@ const handleCastError = (err: any, res: Response) => {
   res.status(400).json({
     success: false,
     message: err.message,
+    statusCode: httpStatus.BAD_REQUEST,
     error: err,
+    stack: err?.stack,
   });
 };
 
@@ -47,7 +52,9 @@ const handlerDuplicateError = (err: any, res: Response) => {
   res.status(httpStatus.CONFLICT).json({
     status: false,
     message: err.message,
+    statusCode: httpStatus.CONFLICT,
     error: err,
+    stack: err?.stack,
   });
 };
 
@@ -55,7 +62,9 @@ const handleGenericError = (err: any, res: Response) => {
   res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
     success: false,
     message: err.message,
+    statusCode: httpStatus.INTERNAL_SERVER_ERROR,
     error: err,
+    stack: err?.stack,
   });
 };
 

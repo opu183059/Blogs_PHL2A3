@@ -4,15 +4,19 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
-const createUser = catchAsync(async (req: Request, res: Response) => {
+const registerUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
-  const result = await userService.createUser(payload);
+  const result = await userService.registerUser(payload);
 
   sendResponse(res, {
-    statusCode: httpStatus.OK,
     success: true,
-    message: "User is created succesfully",
-    data: result,
+    message: "User registered successfully",
+    statusCode: httpStatus.CREATED,
+    data: {
+      id: result._id,
+      name: result.name,
+      email: result.email,
+    },
   });
 });
 
@@ -41,7 +45,7 @@ const getSingleUser = catchAsync(async (req, res) => {
 });
 
 export const userController = {
-  createUser,
+  registerUser,
   getUser,
   getSingleUser,
 };
