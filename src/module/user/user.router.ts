@@ -10,5 +10,7 @@ userRouter.post(
   validateRequest(UserValidation.userValidationSchema),
   userController.createUser
 );
+userRouter.get("/", userController.getUser);
+userRouter.get("/:userId", userController.getSingleUser);
 
 export default userRouter;
