@@ -10,8 +10,27 @@ const createBlog = async (payload: IBlog): Promise<IBlog> => {
   return result;
 };
 
-const getAllBlogs = async (): Promise<IBlog[]> => {
-  const result = await Blog.find().populate("author", {
+const getAllBlogs = async (query: any): Promise<IBlog[]> => {
+  const { search, sortBy, sortOrder, filter } = query;
+  const conditions: any = {};
+  const sort: any = {};
+
+  if (search) {
+    conditions.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { content: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  if (filter) {
+    conditions.author = filter;
+  }
+
+  if (sortBy) {
+    sort[sortBy] = sortOrder === "desc" ? -1 : 1;
+  }
+
+  const result = await Blog.find(conditions).sort(sort).populate("author", {
     name: 1,
     email: 1,
     _id: 0,
