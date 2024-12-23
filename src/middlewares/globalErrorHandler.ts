@@ -3,16 +3,15 @@ import httpStatus from "http-status";
 import mongoose from "mongoose";
 
 const handlerZodError = (err: any, res: Response) => {
-  const issues = err.issues.map((item: any) => {
-    return {
-      path: item.path.join(">"),
-      message: item.message,
-    };
-  });
+  // const issues = err.issues.map((item: any) => {
+  //   return {
+  //     path: item.path.join(">"),
+  //     message: item.message,
+  //   };
+  // });
 
-  res.status(400).json({
+  res.status(httpStatus.BAD_REQUEST).json({
     success: false,
-    // message: err.message,
     message: err.message,
     statusCode: httpStatus.BAD_REQUEST,
     error: err,
@@ -21,15 +20,7 @@ const handlerZodError = (err: any, res: Response) => {
 };
 
 const handleValidationError = (err: any, res: Response) => {
-  const issues = Object.values(err.errors).map((item: any) => {
-    return {
-      name: item.name,
-      path: item.path,
-      message: item.message,
-    };
-  });
-
-  res.status(400).json({
+  res.status(httpStatus.BAD_REQUEST).json({
     success: false,
     message: err.message,
     statusCode: httpStatus.BAD_REQUEST,
@@ -39,7 +30,7 @@ const handleValidationError = (err: any, res: Response) => {
 };
 
 const handleCastError = (err: any, res: Response) => {
-  res.status(400).json({
+  res.status(httpStatus.BAD_REQUEST).json({
     success: false,
     message: err.message,
     statusCode: httpStatus.BAD_REQUEST,
@@ -59,10 +50,10 @@ const handlerDuplicateError = (err: any, res: Response) => {
 };
 
 const handleGenericError = (err: any, res: Response) => {
-  res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+  res.status(err?.statusCode).json({
     success: false,
     message: err.message,
-    statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+    statusCode: err?.statusCode,
     error: err,
     stack: err?.stack,
   });

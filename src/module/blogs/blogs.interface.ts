@@ -5,7 +5,7 @@ export interface IBlog {
   _id?: Types.ObjectId;
   title: string;
   content: string;
-  author: Types.ObjectId;
+  author?: Types.ObjectId;
   isPublished?: boolean;
 }
 

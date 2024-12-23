@@ -10,10 +10,6 @@ const blogsValidationSchema = z.object({
       invalid_type_error: "Content must be string",
       required_error: "Content is required",
     }),
-    author: z.string({
-      invalid_type_error: "Author ID must be string",
-      required_error: "Author ID is required",
-    }),
     isPublished: z.boolean().optional(),
   }),
 });

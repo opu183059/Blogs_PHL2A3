@@ -8,6 +8,7 @@ import { IAuthorInfo } from "./blogs.interface";
 
 const createBlog = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
+  payload.author = req.user.userID;
   const result = await blogService.createBlog(payload);
 
   sendResponse(res, {
