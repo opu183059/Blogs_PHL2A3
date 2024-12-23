@@ -8,4 +8,5 @@ export default {
   port: process.env.PORT,
   bcrypt_salt_rounds: process.env.BYCRYPT_SALT_ROUNDS,
   node_env: process.env.NODE_ENV,
+  jwt_login_token_secret: process.env.JWT_LOGIN_TOKEN_SECRET,
 };
