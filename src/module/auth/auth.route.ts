@@ -7,12 +7,14 @@ import { userController } from "../user/user.controller";
 
 const authRouter = Router();
 
+// login route
 authRouter.post(
   "/login",
   validateRequest(AuthValidation.loginValidationSchema),
   AuthController.loginUser
 );
 
+// register route
 authRouter.post(
   "/register",
   validateRequest(UserValidation.userValidationSchema),

@@ -77,9 +77,24 @@ const getSingleBlog = async (blogId: string) => {
   return result;
 };
 
+const deleteBlog = async (blogId: string, userID: string) => {
+  const blog = await Blog.findById(blogId);
+  if (!blog) {
+    throw new AppError(httpStatus.NOT_FOUND, "Blog not found");
+  } else if (blog.author && blog.author.toString() !== userID) {
+    throw new AppError(
+      httpStatus.UNAUTHORIZED,
+      "You are not allowed to delete this blog"
+    );
+  }
+  const result = await Blog.findByIdAndDelete(blogId);
+  return result;
+};
+
 export const blogService = {
   createBlog,
   getAllBlogs,
   getSingleBlog,
   updateBlog,
+  deleteBlog,
 };
