@@ -9,11 +9,17 @@ const blogRouter = Router();
 
 blogRouter.post(
   "/",
-  Auth("user"),
+  Auth("user", "admin"),
   validateRequest(BlogValidation.blogsValidationSchema),
   blogController.createBlog
 );
 blogRouter.get("/", validateQuery, blogController.getAllBlogs);
-blogRouter.get("/:blogId", blogController.getSingleBlog);
+blogRouter.get("/:blogId", Auth("admin", "user"), blogController.getSingleBlog);
+blogRouter.patch(
+  "/:blogId",
+  Auth("user"),
+  validateRequest(BlogValidation.updateBlogsValidationSchema),
+  blogController.updateBlog
+);
 
 export default blogRouter;

@@ -28,22 +28,24 @@ const Auth = (...requiredRoles: string[]) => {
       throw new AppError(httpStatus.NOT_FOUND, "This user is not found.");
     }
 
-    // check if deleted user
+    // check user is deleted
     const isDeleted = user?.isDeleted;
     if (isDeleted) {
       throw new AppError(httpStatus.FORBIDDEN, "This user is deleted.");
     }
 
-    // checking if the user is blocked
+    // checking user is blocked
     const userStatus = user?.isBlocked;
     if (userStatus === true) {
       throw new AppError(httpStatus.FORBIDDEN, "This user is blocked.");
     }
 
+    // check user role based authorization
     if (requiredRoles && !requiredRoles.includes(userRole)) {
       throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized");
     }
 
+    // setting user in request
     req.user = decoded as JwtPayload;
     next();
   });

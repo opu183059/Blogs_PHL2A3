@@ -3,8 +3,6 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { blogService } from "./blogs.service";
-import { title } from "process";
-import { IAuthorInfo } from "./blogs.interface";
 
 const createBlog = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
@@ -20,6 +18,26 @@ const createBlog = catchAsync(async (req: Request, res: Response) => {
       title: result.title,
       content: result.content,
       author: result.author,
+    },
+  });
+});
+
+const updateBlog = catchAsync(async (req: Request, res: Response) => {
+  const blogId = req?.params?.blogId;
+  const payload = req?.body;
+  const userID = req?.user?.userID;
+  payload.author = userID;
+  const result = await blogService.updateBlog(blogId, userID, payload);
+
+  sendResponse(res, {
+    success: true,
+    message: "Blog updated successfully",
+    statusCode: httpStatus.CREATED,
+    data: {
+      _id: result?._id,
+      title: result?.title,
+      content: result?.content,
+      author: result?.author,
     },
   });
 });
@@ -50,6 +68,7 @@ const getSingleBlog = catchAsync(async (req, res) => {
 
 export const blogController = {
   createBlog,
+  updateBlog,
   getAllBlogs,
   getSingleBlog,
 };
