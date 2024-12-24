@@ -4,74 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.globalErrorHandler = void 0;
-const http_status_1 = __importDefault(require("http-status"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const handlerZodError = (err, res) => {
-    // const issues = err.issues.map((item: any) => {
-    //   return {
-    //     path: item.path.join(">"),
-    //     message: item.message,
-    //   };
-    // });
-    res.status(http_status_1.default.BAD_REQUEST).json({
-        success: false,
-        message: err.message,
-        statusCode: http_status_1.default.BAD_REQUEST,
-        error: err,
-        stack: err === null || err === void 0 ? void 0 : err.stack,
-    });
-};
-const handleValidationError = (err, res) => {
-    res.status(http_status_1.default.BAD_REQUEST).json({
-        success: false,
-        message: err.message,
-        statusCode: http_status_1.default.BAD_REQUEST,
-        error: err,
-        stack: err === null || err === void 0 ? void 0 : err.stack,
-    });
-};
-const handleCastError = (err, res) => {
-    res.status(http_status_1.default.BAD_REQUEST).json({
-        success: false,
-        message: err.message,
-        statusCode: http_status_1.default.BAD_REQUEST,
-        error: err,
-        stack: err === null || err === void 0 ? void 0 : err.stack,
-    });
-};
-const handlerDuplicateError = (err, res) => {
-    res.status(http_status_1.default.CONFLICT).json({
-        status: false,
-        message: err.message,
-        statusCode: http_status_1.default.CONFLICT,
-        error: err,
-        stack: err === null || err === void 0 ? void 0 : err.stack,
-    });
-};
-const handleGenericError = (err, res) => {
-    res.status(err === null || err === void 0 ? void 0 : err.statusCode).json({
-        success: false,
-        message: err.message,
-        statusCode: err === null || err === void 0 ? void 0 : err.statusCode,
-        error: err,
-        stack: err === null || err === void 0 ? void 0 : err.stack,
-    });
-};
+const handleZodError_1 = require("../error/handleZodError");
+const handleCastError_1 = require("../error/handleCastError");
+const handleValidationError_1 = require("../error/handleValidationError");
+const handlerDuplicateError_1 = require("../error/handlerDuplicateError");
+const handleGenericError_1 = require("../error/handleGenericError");
 const globalErrorHandler = (err, req, res, _next) => {
     if (err.name && err.name === "ZodError") {
-        handlerZodError(err, res);
+        (0, handleZodError_1.handlerZodError)(err, res);
     }
     else if (err instanceof mongoose_1.default.Error.CastError) {
-        handleCastError(err, res);
+        (0, handleCastError_1.handleCastError)(err, res);
     }
     else if (err instanceof mongoose_1.default.Error.ValidationError) {
-        handleValidationError(err, res);
+        (0, handleValidationError_1.handleValidationError)(err, res);
     }
     else if (err.code && err.code === 11000) {
-        handlerDuplicateError(err, res);
+        (0, handlerDuplicateError_1.handlerDuplicateError)(err, res);
     }
     else if (err instanceof Error) {
-        handleGenericError(err, res);
+        (0, handleGenericError_1.handleGenericError)(err, res);
     }
 };
 exports.globalErrorHandler = globalErrorHandler;

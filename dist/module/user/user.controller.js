@@ -18,7 +18,12 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
 const registerUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const payload = req.body;
+    // selected name, email, password from req.body to secure manually admin role creation
+    const payload = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+    };
     const result = yield user_service_1.userService.registerUser(payload);
     (0, sendResponse_1.default)(res, {
         success: true,
