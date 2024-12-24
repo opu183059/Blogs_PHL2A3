@@ -3,7 +3,6 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { Request, Response } from "express";
 import { adminService } from "./admin.service";
-import { blogService } from "../blogs/blogs.service";
 
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   const userId = req?.params?.userId;

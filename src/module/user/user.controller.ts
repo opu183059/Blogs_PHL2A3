@@ -5,7 +5,12 @@ import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
-  const payload = req.body;
+  // selected name, email, password from req.body to secure manually admin role creation
+  const payload = {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+  };
   const result = await userService.registerUser(payload);
 
   sendResponse(res, {

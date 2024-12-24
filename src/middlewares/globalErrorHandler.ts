@@ -1,63 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import httpStatus from "http-status";
 import mongoose from "mongoose";
-
-const handlerZodError = (err: any, res: Response) => {
-  // const issues = err.issues.map((item: any) => {
-  //   return {
-  //     path: item.path.join(">"),
-  //     message: item.message,
-  //   };
-  // });
-
-  res.status(httpStatus.BAD_REQUEST).json({
-    success: false,
-    message: err.message,
-    statusCode: httpStatus.BAD_REQUEST,
-    error: err,
-    stack: err?.stack,
-  });
-};
-
-const handleValidationError = (err: any, res: Response) => {
-  res.status(httpStatus.BAD_REQUEST).json({
-    success: false,
-    message: err.message,
-    statusCode: httpStatus.BAD_REQUEST,
-    error: err,
-    stack: err?.stack,
-  });
-};
-
-const handleCastError = (err: any, res: Response) => {
-  res.status(httpStatus.BAD_REQUEST).json({
-    success: false,
-    message: err.message,
-    statusCode: httpStatus.BAD_REQUEST,
-    error: err,
-    stack: err?.stack,
-  });
-};
-
-const handlerDuplicateError = (err: any, res: Response) => {
-  res.status(httpStatus.CONFLICT).json({
-    status: false,
-    message: err.message,
-    statusCode: httpStatus.CONFLICT,
-    error: err,
-    stack: err?.stack,
-  });
-};
-
-const handleGenericError = (err: any, res: Response) => {
-  res.status(err?.statusCode).json({
-    success: false,
-    message: err.message,
-    statusCode: err?.statusCode,
-    error: err,
-    stack: err?.stack,
-  });
-};
+import { handlerZodError } from "../error/handleZodError";
+import { handleCastError } from "../error/handleCastError";
+import { handleValidationError } from "../error/handleValidationError";
+import { handlerDuplicateError } from "../error/handlerDuplicateError";
+import { handleGenericError } from "../error/handleGenericError";
 
 export const globalErrorHandler = (
   err: any,
